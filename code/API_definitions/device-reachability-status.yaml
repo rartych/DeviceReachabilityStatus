@@ -209,19 +209,19 @@ components:
           description: Indicates overall device reachability
           type: boolean
         connectivity:
-          description: |
-            - DATA: The device is connected to the network for Data usage (regardless of the SMS reachability)
-            - SMS: The device is connected to the network only for SMS usage
-          type: array
-          items:
-            $ref: "#/components/schemas/ConnectivityType"
+          $ref: "#/components/schemas/ConnectivityTypeArray"
 
-    ConnectivityType:
-      type: string
-      description: Values for connectivity type
-      enum:
-        - DATA
-        - SMS
+    ConnectivityTypeArray:
+      type: array
+      description: |
+        - DATA: The device is connected to the network for Data usage (regardless of the SMS reachability)
+        - SMS: The device is connected to the network only for SMS usage
+      items:
+        type: string
+        description: Values for connectivity type
+        enum:
+          - DATA
+          - SMS
 
     Device:
       description: |
