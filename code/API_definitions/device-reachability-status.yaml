@@ -79,14 +79,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 1.1.0
   x-camara-commonalities: 0.6
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/DeviceReachabilityStatus
 
 servers:
-  - url: "{apiRoot}/device-reachability-status/vwip"
+  - url: "{apiRoot}/device-reachability-status/v1"
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -188,8 +188,9 @@ components:
   schemas:
     LastStatusTime:
       description: |
-        The last time that the device reachability status was confirmed to be correct by the API provider. The status should still be valid, but the API provider is unable to confirm this.
+        Last time that the associated device reachability status was updated.
         It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+        Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
       type: string
       format: date-time
       example: "2024-02-20T10:41:38.657Z"
@@ -208,17 +209,16 @@ components:
           description: Indicates overall device reachability
           type: boolean
         connectivity:
+          description: |
+            - DATA: The device is connected to the network for Data usage (regardless of the SMS reachability)
+            - SMS: The device is connected to the network only for SMS usage
           type: array
           items:
             $ref: "#/components/schemas/ConnectivityType"
 
     ConnectivityType:
-      description: |
-        DATA: The device is connected to the network for Data usage (regardless of the SMS reachability)
-
-        SMS: The device is connected to the network only for SMS usage
-
       type: string
+      description: Values for connectivity type
       enum:
         - DATA
         - SMS
@@ -312,7 +312,7 @@ components:
       example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
 
     RequestReachabilityStatus:
-      description: The request to retrieve the current reachability status for the requested device.
+      description: The request to retrieve the current roaming-status for the requested device.
       type: object
       properties:
         device:
